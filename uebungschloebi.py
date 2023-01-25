@@ -26,11 +26,11 @@ def world_to_pixel(y:float, x:float, meta_data:dict=None):
         if not ('origin' in meta_data and 'spacing' in meta_data):
             raise KeyError("ERROR: keywords 'origin' and 'spacing' needed in dictionary meta_data!")
         #compute i, j
-
-
-
-    return j, i
-
+    origin = meta_data['origin']
+    spacing = meta_data['spacing']
+    i = (x - origin[0]) / spacing[0]
+    j = (y - origin[1]) / spacing[1]
+    return i,j
 
 def pixel_to_world(j:float, i:float, meta_data:dict=None):
     """

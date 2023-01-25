@@ -53,8 +53,10 @@ def pixel_to_world(j:float, i:float, meta_data:dict=None):
     if meta_data is not None:
         if not ('origin' in meta_data and 'spacing' in meta_data):
             raise KeyError("ERROR: keywords 'origin' and 'spacing' needed in dictionary meta_data!")
-        # YOUR CODE STARTS HERE -- compute x, y
-        # YOUR CODE ENDS HERE
+    origin = meta_data['origin']
+    spacing = meta_data['spacing']
+    x = i * spacing[0] + origin[0]
+    y = j * spacing[1] + origin[1]
     return y, x
 
 
@@ -76,8 +78,6 @@ def nearest_neighbour_interp(image:np.ndarray, j:float, i:float):
     else:
         return image[round(j), round(i)]
 
-
-
 def linear_interp(image:np.ndarray, j:float, i:float):
     """
     Perform linear interpolation of an image at continuous(!) pixel coordinate (i,j). Note that numpy arrays are
@@ -91,8 +91,14 @@ def linear_interp(image:np.ndarray, j:float, i:float):
     value: gray value at continuous pixel position (i,j) in the image computed with linear interpolation.
            Returns 0 if (i,j) is outside the image region.
     """
-    # YOUR CODE STARTS HERE
-    # YOUR CODE ENDS HERE
+    i0 = int(i)
+    j0 = int(j)
+    i1 = i0 + 1
+    j1 = j0 + 1
+    a = i - i0
+    b = j - j0
+    interpolated_value = (1 - a) * (1 - b) * image[j0, i0] + a * (1 - b) * image[j0, i1] + (1 - a) * b * image[j1, i0] + a * b * image[j1, i1]
+    return interpolated_value
 
 
 def create_image():
